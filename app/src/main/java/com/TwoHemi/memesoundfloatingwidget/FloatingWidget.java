@@ -1,9 +1,11 @@
 package com.TwoHemi.memesoundfloatingwidget;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.IBinder;
 import android.view.Gravity;
@@ -34,6 +36,7 @@ public class FloatingWidget extends Service {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int LAYOUT_FLAG;
@@ -42,6 +45,11 @@ public class FloatingWidget extends Service {
         } else {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
+
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+        height = windowManager.getDefaultDisplay().getHeight();
+        width = windowManager.getDefaultDisplay().getWidth();
 
         floatingView = LayoutInflater.from(this).inflate(R.layout.floating_widget_layout,null);
         floatingViewClose = LayoutInflater.from(this).inflate(R.layout.close_widget,null);
@@ -52,12 +60,10 @@ public class FloatingWidget extends Service {
         params.y = 100;
         params.gravity = Gravity.TOP | Gravity.RIGHT;
 
-        WindowManager.LayoutParams closeParams = new WindowManager.LayoutParams(140,140,LAYOUT_FLAG,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
-        closeParams.x = 100;
-        closeParams.y = 100;
+        WindowManager.LayoutParams closeParams = new WindowManager.LayoutParams((int) width,140,LAYOUT_FLAG,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
+        closeParams.y = 0;
         closeParams.gravity = Gravity.BOTTOM | Gravity.CENTER;
 
-        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         floatingViewClose.setVisibility(View.INVISIBLE);
 
@@ -67,10 +73,6 @@ public class FloatingWidget extends Service {
 
         floatingView.setVisibility(View.VISIBLE);
 
-        height = windowManager.getDefaultDisplay().getHeight();
-        width = windowManager.getDefaultDisplay().getWidth();
-
-        System.out.println("Fuuuuuuck "+ height+" "+width);
         tempo = floatingView.findViewById(R.id.temp);
 
          tempo.setOnTouchListener(new View.OnTouchListener() {
@@ -104,9 +106,10 @@ public class FloatingWidget extends Service {
                          if(clickDuration-startClickTime < MAX_CLICK_DURATION)
                              Toast.makeText(FloatingWidget.this, "Time"  , Toast.LENGTH_SHORT).show();
                          else
-                             if(params.y > (height*0.6))
+                             if(params.y > (height*0.8))
                                  stopSelf();
 
+                        if (params.x > width );
                          return true;
                      case MotionEvent.ACTION_MOVE:
 
@@ -116,11 +119,12 @@ public class FloatingWidget extends Service {
                          windowManager.updateViewLayout(floatingView,params);
                          if (params.y > (height*0.4))
                              floatingViewClose.setVisibility(View.VISIBLE);
-//                         if(params.y > (height*0.6))
-//                            floatingViewClose.setImageResource(R.mipmap.ic_close_round);
-//                         else
-//                            floatingViewClose.setImageResource(R.mipmap.ic_close_white_round);
+                         if(params.y > (height*0.8))
+                            floatingViewClose.setBackgroundResource(R.drawable.close_gradient);
+                         else
+                            floatingViewClose.setBackgroundResource(R.drawable.normal_gradient);
 
+                         System.out.println("fuuuck "+width);
 
                          return true;
 
