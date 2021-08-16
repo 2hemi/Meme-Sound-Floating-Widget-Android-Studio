@@ -3,18 +3,17 @@ package com.TwoHemi.memesoundfloatingwidget;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.IBinder;
+
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +24,6 @@ import java.util.Calendar;
 public class FloatingWidget extends Service {
 
     WindowManager windowManager;
-    LinearLayout linearLayout;
     View floatingView,floatingViewClose;
     float height,width;
     TextView tempo;
@@ -101,7 +99,16 @@ public class FloatingWidget extends Service {
                          params.x = initialX + (int)(initialTouchX - motionEvent.getRawX());
                          params.y = initialY + (int)(motionEvent.getRawY() - initialTouchY );
 
-                         System.out.println("Fuuuuuuck "+ clickDuration+" "+startClickTime+" = "+(clickDuration-startClickTime));
+
+                        // if (params.x < (int)width / 2 ){
+
+                            params.x = 0;
+                             windowManager.updateViewLayout(floatingView,params);
+//                         }
+//                         else{
+//                             params.x =(int) width - 200;
+//                             floatingView.setX(width);
+//                         }
 
                          if(clickDuration-startClickTime < MAX_CLICK_DURATION)
                              Toast.makeText(FloatingWidget.this, "Time"  , Toast.LENGTH_SHORT).show();
@@ -109,8 +116,8 @@ public class FloatingWidget extends Service {
                              if(params.y > (height*0.8))
                                  stopSelf();
 
-                        if (params.x > width );
-                         return true;
+                        return true;
+
                      case MotionEvent.ACTION_MOVE:
 
                          params.x = initialX +(int)(initialTouchX - motionEvent.getRawX());
@@ -119,12 +126,14 @@ public class FloatingWidget extends Service {
                          windowManager.updateViewLayout(floatingView,params);
                          if (params.y > (height*0.4))
                              floatingViewClose.setVisibility(View.VISIBLE);
+                         else
+                             floatingViewClose.setVisibility(View.INVISIBLE);
                          if(params.y > (height*0.8))
                             floatingViewClose.setBackgroundResource(R.drawable.close_gradient);
                          else
                             floatingViewClose.setBackgroundResource(R.drawable.normal_gradient);
 
-                         System.out.println("fuuuck "+width);
+                         System.out.println("Fuuuuuuck "+( params.y > (height*0.4))+" ");
 
                          return true;
 
@@ -132,7 +141,12 @@ public class FloatingWidget extends Service {
 
                  return false;
              }
+
          });
+        System.out.println("Fuuuuuuck here");
+
+
+
 
         return START_STICKY;
     }
