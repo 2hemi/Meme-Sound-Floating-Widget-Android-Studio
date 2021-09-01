@@ -50,16 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
         shortcut = findViewById(R.id.shortcut);
         shortcut.setOnClickListener(v -> {
-            Toast.makeText(MainActivity.this, "working fine", Toast.LENGTH_SHORT).show();
+            Intent intent =new Intent(MainActivity.this, com.TwoHemi.memesoundfloatingwidget.SongSelectorActivity.class);
+            startActivity(intent);
         });
 
-        Button button = findViewById(R.id.butt);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity( new Intent(MainActivity.this , com.TwoHemi.memesoundfloatingwidget.Settings.class));
-            }
-        });
+
 
 
     }

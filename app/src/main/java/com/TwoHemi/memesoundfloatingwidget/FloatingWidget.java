@@ -24,9 +24,10 @@ import java.util.Calendar;
 public class FloatingWidget extends Service {
 
     WindowManager windowManager;
-    View floatingView,floatingViewClose;
+    View floatingView,floatingViewClose,musicListView;
     float height,width;
-    TextView tempo;
+    TextView tempo,butt1,butt2,butt3,butt4,butt5,butt6;
+    boolean open = true;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -46,11 +47,15 @@ public class FloatingWidget extends Service {
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
+
         height = windowManager.getDefaultDisplay().getHeight();
         width = windowManager.getDefaultDisplay().getWidth();
 
+
         floatingView = LayoutInflater.from(this).inflate(R.layout.floating_widget_layout,null);
         floatingViewClose = LayoutInflater.from(this).inflate(R.layout.close_widget,null);
+        musicListView = LayoutInflater.from(this).inflate(R.layout.music_list_layout,null);
+
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT,LAYOUT_FLAG,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 
@@ -58,22 +63,33 @@ public class FloatingWidget extends Service {
         params.y = 100;
         params.gravity = Gravity.TOP | Gravity.RIGHT;
 
+
         WindowManager.LayoutParams closeParams = new WindowManager.LayoutParams((int) width,140,LAYOUT_FLAG,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
+
         closeParams.y = 0;
         closeParams.gravity = Gravity.BOTTOM | Gravity.CENTER;
 
 
-        floatingViewClose.setVisibility(View.INVISIBLE);
+        WindowManager.LayoutParams musicListViewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT,LAYOUT_FLAG,WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
+
+        musicListViewParams.x = 0;
+        musicListViewParams.y = 160;
+        musicListViewParams.gravity = Gravity.TOP | Gravity.RIGHT;
 
 
         windowManager.addView(floatingViewClose,closeParams);
         windowManager.addView(floatingView,params);
+        windowManager.addView(musicListView,musicListViewParams);
+
 
         floatingView.setVisibility(View.VISIBLE);
+        floatingViewClose.setVisibility(View.INVISIBLE);
+        musicListView.setVisibility(View.INVISIBLE);
+
 
         tempo = floatingView.findViewById(R.id.temp);
 
-         tempo.setOnTouchListener(new View.OnTouchListener() {
+        tempo.setOnTouchListener(new View.OnTouchListener() {
              int initialX,initialY;
              float initialTouchX,initialTouchY;
              long startClickTime;
@@ -110,8 +126,20 @@ public class FloatingWidget extends Service {
 //                             floatingView.setX(width);
 //                         }
 
-                         if(clickDuration-startClickTime < MAX_CLICK_DURATION)
-                             Toast.makeText(FloatingWidget.this, "Time"  , Toast.LENGTH_SHORT).show();
+                         if(clickDuration-startClickTime < MAX_CLICK_DURATION) {
+                             //Toast.makeText(FloatingWidget.this, "Time", Toast.LENGTH_SHORT).show();
+                             if (open) {
+                                musicListViewParams.y = params.y + 150;
+                                windowManager.updateViewLayout(musicListView, musicListViewParams);
+                                musicListView.setVisibility(View.VISIBLE);
+                                open = false;
+                             }
+                             else {
+                                musicListView.setVisibility(View.GONE);
+                                open = true;
+                             }
+
+                         }
                          else
                              if(params.y > (height*0.8))
                                  stopSelf();
@@ -143,9 +171,69 @@ public class FloatingWidget extends Service {
              }
 
          });
-        System.out.println("Fuuuuuuck here");
 
+        butt1 = musicListView.findViewById(R.id.butt1);
+        butt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(FloatingWidget.this, "Time Fuck YOU", Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        butt2 = musicListView.findViewById(R.id.butt2);
+        butt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(FloatingWidget.this, "Time Fuck YOU", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        butt3 = musicListView.findViewById(R.id.butt2);
+        butt3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(FloatingWidget.this, "Time Fuck YOU", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        butt4 = musicListView.findViewById(R.id.butt3);
+        butt4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(FloatingWidget.this, "Time Fuck YOU", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        butt5 = musicListView.findViewById(R.id.butt4);
+        butt5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(FloatingWidget.this, "Time Fuck YOU", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        butt6 = musicListView.findViewById(R.id.butt5);
+        butt6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(FloatingWidget.this, "Time Fuck YOU", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        butt1 = musicListView.findViewById(R.id.butt6);
+        butt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(FloatingWidget.this, "Time Fuck YOU", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
         return START_STICKY;

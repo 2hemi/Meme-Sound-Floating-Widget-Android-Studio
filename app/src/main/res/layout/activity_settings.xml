@@ -11,22 +11,25 @@
         android:id="@+id/seekBar1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-         android:layout_marginBottom="16dp"
-        android:progressDrawable="@drawable/seek_bar_design"
-        android:thumb="@drawable/seek_thumb_design"
+        android:layout_marginBottom="16dp"
         android:layout_weight="5"/>
+<!--        android:progressDrawable="@drawable/seek_bar_design"-->
+<!--        android:thumb="@drawable/seek_thumb_design"-->
+
 
     <RelativeLayout
         android:id="@+id/widget_rep"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-        <TextView
+        <ImageView
             android:id="@+id/circle"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:background="@drawable/circle"
+            android:src="@mipmap/ic_music_round"
             android:layout_centerInParent="true"
+            android:scaleX="1"
+            android:scaleY="1"
             />
 
     </RelativeLayout>
