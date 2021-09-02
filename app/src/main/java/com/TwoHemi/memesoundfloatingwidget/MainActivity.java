@@ -12,12 +12,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
+
 import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,11 +25,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActivityResultLauncher<String> requestPermissionLauncher =
+                registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        //to modify
+                    } else {
+                        finish();
+                        //to modify
+                    }
+                });
+
         if (!Settings.canDrawOverlays(this))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                 startActivity(myIntent);
             }
+
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED) {
+
+            //to modify
+        }
+        else {
+            requestPermissionLauncher.launch(
+                    Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+
+
+
         aSwitch = findViewById(R.id.switch1);
 
         aSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
