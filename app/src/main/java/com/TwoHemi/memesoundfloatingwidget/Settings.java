@@ -30,7 +30,7 @@ public class Settings extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//                circle.setWidth(i+60);
+//                circle.setWidth(i+60); 
 //                circle.setHeight(i+60);
 //                circle.setTextSize(i);
                 circle.setScaleX(i);
